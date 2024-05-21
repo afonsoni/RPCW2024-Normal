@@ -1,0 +1,50 @@
+1. Quantas classes estão definidas na Ontologia?
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+select (COUNT(?s) as ?nClasses) where { 
+	?s rdf:type owl:Class .
+}
+
+2. Quantas `Object Properties` estão definidas na Ontologia?
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+SELECT (COUNT(?op) AS ?nOP)
+WHERE {
+  ?op rdf:type owl:ObjectProperty .
+}
+
+3. Quantos indivíduos existem na tua ontologia?
+
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT (COUNT(?individual) AS ?nIndividuals)
+WHERE {
+  ?individual a owl:NamedIndividual .
+}
+
+4. Quem planta tomates?
+
+PREFIX : <http://rpcw.di.uminho.pt/historia/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+select ?nome where {
+    ?s rdf:type :Pessoa ;
+       :nome ?nome ;
+       :cultivaPlanta ?v .
+    ?v rdf:type :Vegetal ;
+       :tipo "Tomate" .
+}
+
+5. Quem contrata trabalhadores temporários?
+
+PREFIX : <http://rpcw.di.uminho.pt/historia/>
+
+select ?nome
+where {
+    ?s a :Pessoa ;
+        :nome ?nome;
+        :contrata ?t .
+}

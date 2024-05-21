@@ -1,0 +1,89 @@
+# Quantas doenças estão presentes na ontologia?
+
+PREFIX : <http://www.example.org/disease-ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+select (COUNT(?disease) AS ?numeroDiseases) where {
+  ?disease rdf:type :Disease .
+}
+
+# Que doenças estão associadas ao sintoma "yellowish_skin"?
+
+PREFIX : <http://www.example.org/disease-ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+select ?disease where {
+  ?disease rdf:type :Disease .
+  ?disease :hasSymptom :yellowish_skin .
+}
+
+
+# Que doenças estão associadas ao tratamento "exercise"?
+
+PREFIX : <http://www.example.org/disease-ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+select ?disease where {
+  ?disease rdf:type :Disease .
+  ?disease :hasTreatment :exercise .
+}
+
+# Produz uma lista ordenada alfabeticamente com o nome dos doentes.
+
+PREFIX : <http://www.example.org/disease-ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+select ?nomePaciente where {
+  ?paciente rdf:type :Patient .
+  ?paciente :name ?nomePaciente .
+}
+ORDER BY ?nomePaciente
+
+# Cria uma query CONSTRUCT que diagnostique a doença de cada pessoa, ou seja, produza uma lista de triplos com a forma :patientX :hasDisease :diseaseY. No fim, acrescenta estes triplos à ontologia;
+
+PREFIX : <http://www.example.org/disease-ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+construct {
+  ?patient :hasDisease ?disease .
+} where {
+  ?disease rdf:type :Disease .
+  ?patient rdf:type :Patient .
+  ?disease :hasSymptom ?symptom .
+  ?patient :exhibitsSymptom ?symptom .
+  filter not exists {
+    ?disease :hasSymptom ?otherSymptom .
+    filter not exists {
+      ?patient :exhibitsSymptom ?otherSymptom .
+    }
+  }
+}
+
+# Cria um query SPARQL que poduza uma distribuição dos doentes pelas doenças, ou seja, dá como resultado uma lista de pares
+
+PREFIX : <http://www.example.org/disease-ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+select ?disease (COUNT(?patient) AS ?numPatients) where {
+  ?patient rdf:type :Patient .
+  ?patient :hasDisease ?disease .
+}
+GROUP BY ?disease
+
+# Cria um query SPARQL que poduza uma distribuição das doenças pelos sintomas, ou seja, dá como resultado uma lista de pares (sintoma, nº de doenças com o sintoma);
+
+PREFIX : <http://www.example.org/disease-ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+select ?symptom (COUNT(?disease) AS ?numDiseases) where {
+  ?disease rdf:type :Disease .
+  ?disease :hasSymptom ?symptom .
+}
+GROUP BY ?symptom
+
+#  Cria um query SPARQL que poduza uma distribuição das doenças pelos tratamentos, ou seja, dá como resultado uma lista de pares (tratamento, nº de doenças com o tratamento).
+
+PREFIX : <http://www.example.org/disease-ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+select ?tratamento (COUNT(?disease) AS ?numDiseases) where {
+  ?disease rdf:type :Disease .
+  ?disease :hasTreatment ?tratamento .
+}
+GROUP BY ?tratamento
