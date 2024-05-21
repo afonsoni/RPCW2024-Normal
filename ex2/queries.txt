@@ -66,7 +66,7 @@ select ?disease (COUNT(?patient) AS ?numPatients) where {
 }
 GROUP BY ?disease
 
-# Cria um query SPARQL que poduza uma distribuição das doenças pelos sintomas, ou seja, dá como resultado uma lista de pares (sintoma, nº de doenças com o sintoma);
+# Cria um query SPARQL que produza uma distribuição das doenças pelos sintomas, ou seja, dá como resultado uma lista de pares (sintoma, nº de doenças com o sintoma);
 
 PREFIX : <http://www.example.org/disease-ontology#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -77,7 +77,7 @@ select ?symptom (COUNT(?disease) AS ?numDiseases) where {
 }
 GROUP BY ?symptom
 
-#  Cria um query SPARQL que poduza uma distribuição das doenças pelos tratamentos, ou seja, dá como resultado uma lista de pares (tratamento, nº de doenças com o tratamento).
+#  Cria um query SPARQL que produza uma distribuição das doenças pelos tratamentos, ou seja, dá como resultado uma lista de pares (tratamento, nº de doenças com o tratamento).
 
 PREFIX : <http://www.example.org/disease-ontology#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>

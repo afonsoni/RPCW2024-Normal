@@ -132,11 +132,13 @@ with open('med_tratamentos.ttl', 'w', encoding='utf-8') as output_file:
 with open('doentes/pg52669.json', encoding='utf-8') as jsonfile:
     reader = json.load(jsonfile)
     # iterar sobre os doentes
-    for patient in reader:
-        name = patient['nome'].strip().replace(' ', '_').replace('(', '_').replace(')', '_')
-        symptoms = patient['sintomas']
+    for i, row in enumerate(reader):
+        if i >= 100:
+            break
+        name = row['nome'].strip().replace(' ', '_').replace('(', '_').replace(')', '_')
+        symptoms = row['sintomas']
         ttl += f"\n:{name} rdf:type :Patient ;\n"
-        ttl += f'    :name "{patient["nome"]}"^^xsd:string ;\n'
+        ttl += f'    :name "{row["nome"]}"^^xsd:string ;\n'
         for symptom in symptoms:
             if symptom:
                 symptom = symptom.strip().replace(' ', '_').replace('(', '_').replace(')', '_')
